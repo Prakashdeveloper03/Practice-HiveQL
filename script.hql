@@ -88,3 +88,62 @@ SELECT age, COUNT(*) FROM table1 GROUP BY age;
 
 --Group by is_student and calculate the average weight for each group
 SELECT is_student, AVG(weight) FROM table1 GROUP BY is_student;
+
+--Union all rows from table1 and table2
+SELECT * FROM table1 UNION ALL SELECT * FROM table2;
+
+--Intersect rows from table1 and table2
+SELECT * FROM table1 INTERSECT SELECT * FROM table2;
+
+--Subquery
+SELECT name FROM table1 WHERE id IN (SELECT id FROM table1 WHERE phone_numbers IS NOT NULL);
+
+--Update the name of the person with id 1
+UPDATE table1 SET name = 'Alicia' WHERE id = 1;
+
+--Delete the person with id 3
+DELETE FROM table1 WHERE id = 3;
+
+--Add a new column to the table
+ALTER TABLE table1 ADD COLUMN email STRING;
+
+--Calculate the maximum age
+SELECT MAX(age) FROM table1;
+
+--Calculate the minimum weight
+SELECT MIN(weight) FROM table1;
+
+--Calculate the square root of the weight
+SELECT SQRT(weight) FROM table1;
+
+--Calculate the absolute value of the age
+SELECT ABS(age) FROM table1;
+
+--Convert the name to uppercase
+SELECT UPPER(name) FROM table1;
+
+--Concatenate the name and address.city columns
+SELECT CONCAT(name, ', ', address.city) FROM table1;
+
+--Extract the year from the birth_date column
+SELECT YEAR(birth_date) FROM table1;
+
+--Add 30 days to the birth_date column
+SELECT DATE_ADD(birth_date, 30) FROM table1;
+
+--Calculate the average weight for each age group using a window function
+SELECT age, AVG(weight) OVER (PARTITION BY age) FROM table1;
+
+--Create an index on the name column
+CREATE INDEX name_index ON table1 (name);
+
+--Create a view that selects the name and age columns
+CREATE VIEW name_age_view AS SELECT name, age FROM table1;
+
+--Create a trigger that updates the email column whenever the phone_numbers map is updated
+CREATE TRIGGER update_email AFTER UPDATE ON table1
+FOR EACH ROW
+WHEN (NEW.phone_numbers != OLD.phone_numbers)
+BEGIN
+UPDATE table1 SET email = 'updated_email' WHERE id = NEW.id;
+END;
